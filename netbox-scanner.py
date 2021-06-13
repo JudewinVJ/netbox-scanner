@@ -22,6 +22,7 @@ if argument == 'prime':
     from nbs.prime import Prime
 
 
+
 local_config = expanduser('~/.netbox-scanner.conf')
 global_config = '/opt/netbox/netbox-scanner.conf'
 config = ConfigParser()
@@ -95,6 +96,17 @@ def cmd_prime(s):  # prime handler
     )
     h.run()  # set access_point=True to process APs
     s.sync(h.hosts)
+   
+def cmd_nessus(s):  # nessus handler
+    h = Prime(
+        prime['address'],
+        prime['username'],
+        prime['password'],
+        prime.getboolean('tls_verify'),
+        prime['unknown']
+    )
+    h.run()  # set access_point=True to process APs
+    s.sync(h.hosts)
 
 
 if __name__ == '__main__':
@@ -116,5 +128,10 @@ if __name__ == '__main__':
         scanner.tag = prime['tag']
         scanner.cleanup = prime.getboolean('cleanup')
         cmd_prime(scanner)
+    elif args.command == 'nessus':
+        scanner.tag = nessus['tag']
+        scanner.cleanup = nessus.getboolean('cleanup')
+        cmd_nessus(scanner)
+        
 
     exit(0)
