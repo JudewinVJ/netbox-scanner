@@ -24,6 +24,7 @@ if argument == 'nessus':
     from nbs.nessus import Nessus
 
 
+
 local_config = expanduser('~/.netbox-scanner.conf')
 global_config = '/opt/netbox/netbox-scanner.conf'
 config = ConfigParser()
