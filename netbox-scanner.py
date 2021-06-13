@@ -20,6 +20,8 @@ if argument == 'netxms':
     from nbs.netxms import NetXMS
 if argument == 'prime':
     from nbs.prime import Prime
+if argument == 'nessus':
+    from nbs.nessus import Nessus
 
 
 
@@ -41,6 +43,9 @@ if argument == 'netxms':
     netxms = config['NETXMS']
 if argument == 'prime':
     prime = config['PRIME']
+if argument == 'nessus':
+    prime = config['NESSUS']
+
 
 parser = ArgumentParser(description='netbox-scanner')
 subparsers = parser.add_subparsers(title='Commands', dest='command')
@@ -51,6 +56,8 @@ if argument == 'netxms':
     argsp = subparsers.add_parser('netxms', help='NetXMS module')
 if argument == 'prime':
     argsp = subparsers.add_parser('prime', help='Cisco Prime module')
+if argument == 'nessus':
+    argsp = subparsers.add_parser('nessys', help='Nessus module')
 args = parser.parse_args()
 
 logfile = '{}/netbox-scanner-{}.log'.format(
@@ -98,14 +105,8 @@ def cmd_prime(s):  # prime handler
     s.sync(h.hosts)
    
 def cmd_nessus(s):  # nessus handler
-    h = Prime(
-        prime['address'],
-        prime['username'],
-        prime['password'],
-        prime.getboolean('tls_verify'),
-        prime['unknown']
-    )
-    h.run()  # set access_point=True to process APs
+    h = Nessus(s, nmap['unknown'])
+    h.run() 
     s.sync(h.hosts)
 
 
