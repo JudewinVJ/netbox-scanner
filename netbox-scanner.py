@@ -44,7 +44,7 @@ if argument == 'netxms':
 if argument == 'prime':
     prime = config['PRIME']
 if argument == 'nessus':
-    prime = config['NESSUS']
+    nessus = config['NESSUS']
 
 
 parser = ArgumentParser(description='netbox-scanner')
