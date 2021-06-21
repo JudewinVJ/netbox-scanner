@@ -105,7 +105,7 @@ def cmd_prime(s):  # prime handler
     s.sync(h.hosts)
    
 def cmd_nessus(s):  # nessus handler
-    h = Nessus(s, nmap['unknown'])
+    h = Nessus(s, nessus['unknown'])
     h.run() 
     s.sync(h.hosts)
 
@@ -115,8 +115,8 @@ if __name__ == '__main__':
         netbox['address'],
         netbox['token'],
         netbox['tls_verify'],
-        nmap['tag'],
-        nmap.getboolean('cleanup')
+        nessus['tag'],
+        nessus.getboolean('cleanup')
     )
 
     if args.command == 'nmap':
