@@ -105,7 +105,7 @@ def cmd_prime(s):  # prime handler
     s.sync(h.hosts)
    
 def cmd_nessus(s):  # nessus handler
-    h = Nessus(s, nessus['unknown'])
+    h = Nessus(nessus['unknown'])
     h.run() 
     s.sync(h.hosts)
 
