@@ -57,7 +57,7 @@ if argument == 'netxms':
 if argument == 'prime':
     argsp = subparsers.add_parser('prime', help='Cisco Prime module')
 if argument == 'nessus':
-    argsp = subparsers.add_parser('nessys', help='Nessus module')
+    argsp = subparsers.add_parser('nessus', help='Nessus module')
 args = parser.parse_args()
 
 logfile = '{}/netbox-scanner-{}.log'.format(
