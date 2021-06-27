@@ -48,9 +48,9 @@ class NetBoxScanner(object):
 
         if nbhost:
             if (self.tag in nbhost.tags):
-                if (host[1] != nbhost.description):
-                    aux = nbhost.description
-                    nbhost.description = host[1]
+                if (host[1] != nbhost.dns_name):
+                    aux = nbhost.dns_name
+                    nbhost.dns_name = host[1]
                     nbhost.save()
                     logging.info(
                         f'updated: {host[0]}/32 "{aux}" -> "{host[1]}"')
@@ -65,8 +65,8 @@ class NetBoxScanner(object):
             self.netbox.ipam.ip_addresses.create(
                 address=host[0],
                 tags=[{"name": self.tag}],
-                # dns_name=host[1],
-                description=host[1]
+                dns_name=host[1]
+                #description=host[1]
             )
             logging.info(f'created: {host[0]}/32 "{host[1]}"')
             self.stats['created'] += 1
