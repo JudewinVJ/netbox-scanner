@@ -48,6 +48,7 @@ class NetBoxScanner(object):
 
         if nbhost:
             if (self.tag in nbhost.tags):
+                
                 if (host[1] != nbhost.dns_name):
                     aux = nbhost.dns_name
                     nbhost.dns_name = host[1]
@@ -57,7 +58,7 @@ class NetBoxScanner(object):
                     self.stats['updated'] += 1
                 else:
                     logging.info(f'unchanged: {host[0]}/32 "{host[1]}"')
-                    self.stats['unchanged'] += 1
+                    self.stats['unchanged'] += 1 
             else:
                 logging.info(f'unchanged: {host[0]}/32 "{host[1]}"')
                 self.stats['unchanged'] += 1
@@ -65,8 +66,8 @@ class NetBoxScanner(object):
             self.netbox.ipam.ip_addresses.create(
                 address=host[0],
                 tags=[{"name": self.tag}],
-                dns_name=host[1]
-                #description=host[1]
+                dns_name=host[1],
+                description="0 days ago"
             )
             logging.info(f'created: {host[0]}/32 "{host[1]}"')
             self.stats['created'] += 1
@@ -79,9 +80,14 @@ class NetBoxScanner(object):
         for nbhost in nbhosts:
             nbh = str(nbhost).split('/')[0]
             if not any(nbh == addr[0] for addr in hosts):
-                nbhost.delete()
-                logging.info(f'deleted: {nbhost}')
-                self.stats['deleted'] += 1
+                days = str(nbhost.description)[0]
+                days = int(days)
+                days = days+1
+                nbhost.description = str(days)+" alive days ago"
+                if days >=30 :
+                    nbhost.delete()
+                    logging.info(f'deleted: {nbhost}')
+                    self.stats['deleted'] += 1
 
     def sync(self, hosts):
         '''Syncs hosts to NetBox
