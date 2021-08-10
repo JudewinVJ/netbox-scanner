@@ -52,6 +52,7 @@ class NetBoxScanner(object):
                 if (host[1] != nbhost.dns_name):
                     aux = nbhost.dns_name
                     nbhost.dns_name = host[1]
+                    nbhost.description = "0 days ago"
                     nbhost.save()
                     logging.info(
                         f'updated: {host[0]}/32 "{aux}" -> "{host[1]}"')
@@ -80,10 +81,12 @@ class NetBoxScanner(object):
         for nbhost in nbhosts:
             nbh = str(nbhost).split('/')[0]
             if not any(nbh == addr[0] for addr in hosts):
-                days = str(nbhost.description)[0]
+                days = str(nbhost.description).split()[0]
                 days = int(days)
                 days = days+1
                 nbhost.description = str(days)+" alive days ago"
+                self.stats['updated'] += 1
+                nbhost.save()
                 if days >=30 :
                     nbhost.delete()
                     logging.info(f'deleted: {nbhost}')
